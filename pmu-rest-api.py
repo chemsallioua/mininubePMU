@@ -126,11 +126,11 @@ class Estimate(Resource):
 
         data_frame = data['data_frame']
 
-        # try:
-        #     validate(data_frame, self.data_frame_schema)
-        # except ValidationError as e:
-        #     print(e)
-        #     abort(400)
+        try:
+            validate(data_frame, self.data_frame_schema)
+        except ValidationError as e:
+            print(e)
+            abort(400)
         
         # getting the midwindow fracsec
         timebase =data_frame['timestamp']['timebase']
@@ -140,19 +140,19 @@ class Estimate(Resource):
         else:
             mid_window_fracsec = 0
 
-        # frame = {}
-        # for channel in data_frame['channels']:
-        #     decoded_data = base64.b64decode(channel['payload'])
-        #     input_signal_window = []
-        #     for i in range(0, len(decoded_data), 8):
-        #         sample = struct.unpack("d", decoded_data[i:i+8])[0]
-        #         input_signal_window.append(sample)    
-        #     estimated_frame = synchestim.estimate(input_signal_window, mid_window_fracsec)
-        #     if estimated_frame is None:
-        #         abort(500)
+        frame = {}
+        for channel in data_frame['channels']:
+            decoded_data = base64.b64decode(channel['payload'])
+            input_signal_window = []
+            for i in range(0, len(decoded_data), 8):
+                sample = struct.unpack("d", decoded_data[i:i+8])[0]
+                input_signal_window.append(sample)    
+            estimated_frame = synchestim.estimate(input_signal_window, mid_window_fracsec)
+            if estimated_frame is None:
+                abort(500)
 
-        #     frame["channel_" + str(channel['channel_number'])] = estimated_frame
-        frame = 1000
+            frame["channel_" + str(channel['channel_number'])] = estimated_frame
+        
         return {"frame": frame}
 
     def perform_estimate(data_frame):
@@ -165,4 +165,4 @@ api.add_resource(Configure, "/configure")
 
 if __name__ == "__main__":
 
-    app.run(debug=True, threaded=True, host='127.0.0.1', port=5000)
+    app.run(debug=False, threaded=True, host='0.0.0.0', port=8080)

@@ -64,10 +64,10 @@ class NodeGatewaySimulator:
 if __name__ == "__main__":
 
     # Create a NodeGatewaySimulator object
-    node_gateway = NodeGatewaySimulator(url = "http://localhost:5000")
+    node_gateway = NodeGatewaySimulator(url = "http://16.16.123.224:8080")
 
     n_cycles = 4
-    sample_rate = 25600//64
+    sample_rate = 25600
     nominal_freq = 50
     NUM_CHANNELS = 4
 
@@ -128,7 +128,7 @@ if __name__ == "__main__":
             start = time.time()
             estimate = node_gateway.get_estimate(data_frame)
             end = time.time()
-            print("Time elapsed:", end - start, " seconds")
+            print("Frame rate:", 1/(end - start), " fps")
         print(estimate)
     except Exception as e:
         print(e)
