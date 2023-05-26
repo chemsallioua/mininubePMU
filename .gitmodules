@@ -1,0 +1,3 @@
+[submodule "SynchroPMU"]
+	path = SynchroPMU
+	url = https://github.com/chemsallioua/SynchroPMU
