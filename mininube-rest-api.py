@@ -6,8 +6,8 @@ from pmu_estimator import PMUEstimator, EstimatorConfig
 import base64
 import struct
 
-app = Flask(__name__)
-api = Api(app)
+mininubePMU = Flask(__name__)
+api = Api(mininubePMU)
 
 # initialize pmu estimator object
 synchestim = PMUEstimator()
@@ -146,7 +146,7 @@ class Estimate(Resource):
             input_signal_window = []
             for i in range(0, len(decoded_data), 8):
                 sample = struct.unpack("d", decoded_data[i:i+8])[0]
-                input_signal_window.append(sample)    
+                input_signal_window.mininubePMUend(sample)    
             estimated_frame = synchestim.estimate(input_signal_window, mid_window_fracsec)
             if estimated_frame is None:
                 abort(500)
@@ -155,14 +155,9 @@ class Estimate(Resource):
         
         return {"frame": frame}
 
-    def perform_estimate(data_frame):
-        # Perform the necessary calculations on the data frame to get the estimate
-        # For this example, we'll return a fixed value
-        return 2048
-
 api.add_resource(Estimate, "/estimate")
 api.add_resource(Configure, "/configure")
 
 if __name__ == "__main__":
 
-    app.run(debug=False, threaded=True, host='0.0.0.0', port=8080)
+    mininubePMU.run(debug=False, threaded=True, host='0.0.0.0', port=8080)

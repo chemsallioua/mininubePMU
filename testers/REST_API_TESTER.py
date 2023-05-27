@@ -64,12 +64,12 @@ class NodeGatewaySimulator:
 if __name__ == "__main__":
 
     # Create a NodeGatewaySimulator object
-    node_gateway = NodeGatewaySimulator(url = "http://16.16.123.224:8080")
+    node_gateway = NodeGatewaySimulator(url = "http://16.16.255.226:8080")
 
     n_cycles = 4
-    sample_rate = 25600
+    sample_rate = 51200//16
     nominal_freq = 50
-    NUM_CHANNELS = 4
+    NUM_CHANNELS = 1
 
     # Configure PMU
     configuration = {
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     # Add the encoded signal to the data frame
     data_frame["channels"] = []
     
-    for i in range(1, NUM_CHANNELS):
+    for i in range(1, NUM_CHANNELS+1):
         # Get the encoded signal
         signal_frequency = 50.0 + i
         encoded_signal = node_gateway.get_encoded_signal(nominal_freq = nominal_freq, frequency = signal_frequency, sampling_rate = sample_rate, n_cycles = n_cycles)
@@ -124,11 +124,16 @@ if __name__ == "__main__":
 
     # Get the estimate
     try:
-        for i in range(0, 10):
-            start = time.time()
+        iterations = 4
+        start = time.time()
+
+        for i in range(0, iterations):
             estimate = node_gateway.get_estimate(data_frame)
-            end = time.time()
-            print("Frame rate:", 1/(end - start), " fps")
+
+        end = time.time()
+        time_per_iter = (end - start)/iterations
+        print("Frame rate:", 1/time_per_iter, " fps")
+        print("Time:", time_per_iter*1000, " ms")
         print(estimate)
     except Exception as e:
         print(e)
