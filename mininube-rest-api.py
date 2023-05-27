@@ -146,7 +146,7 @@ class Estimate(Resource):
             input_signal_window = []
             for i in range(0, len(decoded_data), 8):
                 sample = struct.unpack("d", decoded_data[i:i+8])[0]
-                input_signal_window.mininubePMUend(sample)    
+                input_signal_window.append(sample)    
             estimated_frame = synchestim.estimate(input_signal_window, mid_window_fracsec)
             if estimated_frame is None:
                 abort(500)

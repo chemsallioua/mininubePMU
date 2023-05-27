@@ -62,7 +62,7 @@ async def main():
     simulator = WebsocketGatewaySimulator(url="wss://pp06w1fdrj.execute-api.eu-north-1.amazonaws.com/dev")
 
     n_cycles = 4
-    sample_rate = 51200
+    sample_rate = 51200//4
     nominal_freq = 50
     NUM_CHANNELS = 4
 
