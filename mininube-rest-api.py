@@ -54,8 +54,6 @@ class Configure(Resource):
         "required": ["signal", "synchrophasor", "rocof"]
     }
 
-    
-    
     def post(self):
         data = request.get_json()
 
